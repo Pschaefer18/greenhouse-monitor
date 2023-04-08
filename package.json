@@ -23,5 +23,8 @@
     "firebase-app": "^0.0.1",
     "http-server": "^14.1.1",
     "plotly.js-dist": "^2.20.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
   }
 }
