@@ -1,0 +1,24 @@
+{
+  "name": "greenhouse-monitor",
+  "version": "1.0.0",
+  "description": "monitoring the temperature and humidity of my greenhouse and formatting that data in a line chart",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pschaefer18/greenhouse-monitor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pschaefer18/greenhouse-monitor/issues"
+  },
+  "homepage": "https://github.com/Pschaefer18/greenhouse-monitor#readme",
+  "dependencies": {
+    "firebase": "^9.19.1",
+    "firebase-app": "^0.0.1",
+    "http-server": "^14.1.1",
+    "plotly.js-dist": "^2.20.0"
+  }
+}

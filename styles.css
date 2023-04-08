@@ -1,0 +1,17 @@
+body {
+    font-family: sans-serif;
+  }
+  
+  #tester {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 100px;
+  }
+  #angular-chart {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 100px;
+  }
+  .svg-container {
+    margin: auto !important;
+  }
