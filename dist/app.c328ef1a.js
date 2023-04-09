@@ -17589,6 +17589,7 @@ var app = (0, _app.initializeApp)(firebaseConfig);
 var db = (0, _database.getDatabase)(app);
 var x = [];
 var y = [];
+var h = [];
 
 // Get the data from Firebase
 var readingsRef = (0, _database.ref)(db, '/');
@@ -17598,6 +17599,7 @@ var readingsRef = (0, _database.ref)(db, '/');
     Object.keys(records).forEach(function (key) {
       x.push(records[key].Timestamp);
       y.push(records[key].Temperature);
+      h.push(records[key].Humidity);
       console.log(records[key].Temperature);
     });
     //   // Render the chart
@@ -17611,12 +17613,24 @@ var readingsRef = (0, _database.ref)(db, '/');
         t: 0
       }
     });
+    var value = y[y.length - 3];
+    var ranges = [0, 32, 50, 80, 90, 100];
+    var color = ['lightblue', 'blue', 'green', 'yellow', 'red', 'darkred'];
+
+    // Find the index of the range that contains the value
+    var valueIndex = 0;
+    for (var i = 0; i < ranges.length - 1; i++) {
+      if (value >= ranges[i] && value < ranges[i + 1]) {
+        valueIndex = i;
+        break;
+      }
+    }
     var tempData = [{
       domain: {
         x: [0, 1],
         y: [0, 1]
       },
-      value: y[y.length - 2],
+      value: y[y.length - 3],
       title: {
         text: "Temperature"
       },
@@ -17628,6 +17642,9 @@ var readingsRef = (0, _database.ref)(db, '/');
       gauge: {
         axis: {
           range: [null, 140]
+        },
+        bar: {
+          color: color[valueIndex]
         }
       }
     }];
@@ -17635,7 +17652,32 @@ var readingsRef = (0, _database.ref)(db, '/');
       width: 600,
       height: 400
     };
-    Plotly.newPlot('angular-chart', tempData, layout);
+    Plotly.newPlot('temperature-chart', tempData, layout);
+    var humidityData = [{
+      domain: {
+        x: [0, 1],
+        y: [0, 1]
+      },
+      value: h[h.length - 3],
+      title: {
+        text: "Humidity"
+      },
+      type: "indicator",
+      mode: "gauge+number",
+      delta: {
+        reference: 400
+      },
+      gauge: {
+        axis: {
+          range: [null, 1]
+        }
+      }
+    }];
+    var layout = {
+      width: 600,
+      height: 400
+    };
+    Plotly.newPlot('humidity-chart', humidityData, layout);
   }
 });
 
@@ -17671,7 +17713,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52742" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53149" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
