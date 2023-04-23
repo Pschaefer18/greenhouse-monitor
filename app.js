@@ -1,6 +1,6 @@
 import {initializeApp} from 'firebase/app'
 import { getDatabase, ref, onValue, get, child } from "firebase/database"
-
+import {DateTime} from 'luxon'
 // Initialize Firebase
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -30,23 +30,25 @@ const firebaseConfig = {
     if (snapshot.exists()) {
       const records = snapshot.val()
       Object.keys(records).forEach((key) => {
-        x.push(records[key].Timestamp)
+        x.push(records[key].Timestamp ? DateTime.fromMillis(records[key].Timestamp).toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : null)
         y.push(records[key].Temperature)
-        h.push(records[key].Humidity)
-        console.log(records[key].Temperature)
+        h.push(records[key].Humidity * 100)
       });
-          //   // Render the chart
-    
-    const TESTER = document.getElementById('tester');
-    Plotly.newPlot( TESTER, [{
+  // Render the chart
+    const temperatureChart = document.getElementById('temperature-chart');
+    Plotly.newPlot( temperatureChart, [{
     x: x,
     y: y }], {
+    margin: { t: 0 }});
+    const humidityChart = document.getElementById('humidity-chart');
+    Plotly.newPlot( humidityChart, [{
+    x: x,
+    y: h }], {
     margin: { t: 0 }});
 
     let value = y[y.length - 3];
     let ranges = [0, 32, 50, 80, 90, 100];
     let color = ['lightblue', 'blue', 'green', 'yellow', 'red', 'darkred'];
-
     // Find the index of the range that contains the value
     let valueIndex = 0;
     for (let i = 0; i < ranges.length - 1; i++) {
@@ -68,8 +70,8 @@ const firebaseConfig = {
       }
     ];
     
-    var layout = { width: 600, height: 400 };
-    Plotly.newPlot('temperature-chart', tempData, layout);
+    var layout = { width: 600, height: 400, label: '°F'};
+    Plotly.newPlot('temp', tempData, layout);
 
     var humidityData = [
       {
@@ -79,12 +81,12 @@ const firebaseConfig = {
         type: "indicator",
         mode: "gauge+number",
         delta: { reference: 400 },
-        gauge: { axis: { range: [null, 1] } }
+        gauge: { axis: { range: [null, 100] } }
       }
     ];
     
     var layout = { width: 600, height: 400 };
-    Plotly.newPlot('humidity-chart', humidityData, layout);
+    Plotly.newPlot('humidity', humidityData, layout);
     }})
 
 
